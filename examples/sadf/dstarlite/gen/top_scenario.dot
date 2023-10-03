@@ -1,0 +1,181 @@
+digraph "" {
+	graph [bb="0,0,707,351",
+		fontname=Helvetica,
+		overlap=prism,
+		rankdir=LR,
+		splines=true
+	];
+	node [label="\N"];
+	subgraph "cluster_top_scenario.xml" {
+		graph [bb="8,8,699,343",
+			color="#f4efea",
+			fontsize=13,
+			label=top_scenario,
+			lheight=0.19,
+			lp="353.5,332",
+			lwidth=1.08,
+			style="filled, rounded"
+		];
+		subgraph "cluster_top_scenario.xmlsources" {
+			graph [label=""];
+		}
+		subgraph "cluster_top_scenario.xmlinps" {
+			graph [label=""];
+		}
+		subgraph "cluster_top_scenario.xmlsinks" {
+			graph [bb="29.5,259,123.5,313",
+				label=""
+			];
+			"top_scenario@sink"	[color=black,
+				fillcolor="#FCD975",
+				fontname=Helvetica,
+				fontsize=12,
+				height=0.51389,
+				label="{ { <iport1> } | { sink&#92;nsink&#92;n } | {  } }",
+				orientation=90,
+				pos="76.5,286",
+				rects="37.5,268,57.5,304 57.5,268,95.5,304 95.5,268,115.5,304",
+				shape=record,
+				style="rounded,filled",
+				width=1.0833];
+		}
+		subgraph "cluster_top_scenario.xmloutps" {
+			graph [label=""];
+		}
+		subgraph "cluster_top_scenario.xmlothers" {
+			graph [bb="16,60,691,251",
+				label=""
+			];
+			"top_scenario@maze1"	[color=black,
+				fillcolor="#FCD975",
+				fontname=Helvetica,
+				fontsize=12,
+				height=0.88889,
+				label="{ { <port_1>|<port_0> } | { maze1&#92;ncombMN&#92;n } | { <port_4>|<port_3>|<port_2> } }",
+				orientation=90,
+				pos="76.5,156",
+				rects="24,156.5,44,187.5 24,124.5,44,156.5 44,124.5,109,187.5 109,166.5,129,187.5 109,145.5,129,166.5 109,124.5,129,145.5",
+				shape=record,
+				style="rounded,filled",
+				width=1.4583];
+			"top_scenario@maze_init"	[color=black,
+				fillcolor="#FCD975",
+				fontname=Helvetica,
+				fontsize=12,
+				height=0.51389,
+				label="{ { <iport1> } | { maze_init&#92;ndelay&#92;n } | { <oport1> } }",
+				orientation=90,
+				pos="219,87",
+				rects="165,69,185,105 185,69,253,105 253,69,273,105",
+				shape=record,
+				style="rounded,filled",
+				width=1.5];
+			"top_scenario@maze1":port_2:e -> "top_scenario@maze_init":iport1:w	[penwidth=1,
+				pos="e,165,87 129,135 151.5,135 142.68,100.83 155.39,90.149"];
+			"top_scenario@controller"	[color=black,
+				fillcolor="#FCD975",
+				fontname=Helvetica,
+				fontsize=12,
+				height=0.88889,
+				label="{ { <port_2>|<port_1>|<port_0> } | { controller&#92;ncombMN&#92;n } | { <port_4>|<port_3> } }",
+				orientation=90,
+				pos="219,156",
+				rects="166,166.5,186,187.5 166,145.5,186,166.5 166,124.5,186,145.5 186,124.5,252,187.5 252,156.5,272,187.5 252,124.5,272,156.5",
+				shape=record,
+				style="rounded,filled",
+				width=1.4722];
+			"top_scenario@maze1":port_4:e -> "top_scenario@controller":port_2:w	[penwidth=1,
+				pos="e,165,177 129,177 141,177 146.25,177 154.88,177"];
+			"top_scenario@maze1":port_3:e -> "top_scenario@controller":port_1:w	[penwidth=2,
+				pos="e,165,156 129,156 141,156 146.25,156 154.88,156",
+				style=bold];
+			"top_scenario@controller_monitor"	[color=black,
+				fillcolor="#FCD975",
+				fontname=Helvetica,
+				fontsize=12,
+				height=0.88889,
+				label="{ { <port_2>|<port_1>|<port_0> } | { controller_monitor&#92;ncombMN&#92;n } | { <port_3> } }",
+				orientation=90,
+				pos="385.5,211",
+				rects="309,221.5,329,242.5 309,200.5,329,221.5 309,179.5,329,200.5 329,179.5,442,242.5 442,179.5,462,242.5",
+				shape=record,
+				style="rounded,filled",
+				width=2.125];
+			"top_scenario@maze1":port_4:e -> "top_scenario@controller_monitor":port_2:w	[penwidth=1,
+				pos="e,309,232 129,177 149.27,177 146.52,196.68 165,205 221.12,230.28 241.63,231.89 298.71,231.99"];
+			"top_scenario@maze_init":oport1:e -> "top_scenario@maze1":port_0:w	[penwidth=1,
+				pos="e,22.5,140 274,87 282.23,87 278.71,99.564 273,105.5 271.61,106.95 131,118.86 129,119 123.15,119.41 27.68,119.88 23.5,124 21.834,\
+125.64 20.387,127.93 19.446,130.26"];
+			"top_scenario@cmd_init"	[color=black,
+				fillcolor="#FCD975",
+				fontname=Helvetica,
+				fontsize=12,
+				height=0.51389,
+				label="{ { <iport1> } | { cmd_init&#92;ndelay&#92;n } | { <oport1> } }",
+				orientation=90,
+				pos="385.5,142",
+				rects="334.5,124,354.5,160 354.5,124,416.5,160 416.5,124,436.5,160",
+				shape=record,
+				style="rounded,filled",
+				width=1.4167];
+			"top_scenario@cmd_init":oport1:e -> "top_scenario@maze1":port_1:w	[penwidth=1,
+				pos="e,22.5,172 437.5,142 445.73,142 442.26,154.62 436.5,160.5 416.62,180.79 335.6,160.02 309,170 290.27,177.03 291.97,190.68 273,197 \
+227.46,212.18 212.98,198.52 165,197 102.02,195 68.035,232.58 23.5,188 21.848,186.35 20.405,184.05 19.464,181.72"];
+			"top_scenario@controller":port_4:e -> "top_scenario@cmd_init":iport1:w	[penwidth=1,
+				pos="e,333.5,142 273,172 299.26,172 302.91,149.03 323.51,143.29"];
+			"top_scenario@controller_state"	[color=black,
+				fillcolor="#FCD975",
+				fontname=Helvetica,
+				fontsize=12,
+				height=0.51389,
+				label="{ { <iport1> } | { controller_state&#92;ndelay&#92;n } | { <oport1> } }",
+				orientation=90,
+				pos="385.5,87",
+				rects="316.5,69,336.5,105 336.5,69,434.5,105 434.5,69,454.5,105",
+				shape=record,
+				style="rounded,filled",
+				width=1.9167];
+			"top_scenario@controller":port_3:e -> "top_scenario@controller_state":iport1:w	[penwidth=1,
+				pos="e,315.5,87 273,140 299.18,140 289.21,100.14 305.79,89.556"];
+			"top_scenario@controller":port_4:e -> "top_scenario@controller_monitor":port_1:w	[penwidth=1,
+				pos="e,309,211 273,172 292.35,172 288.31,198.24 299.25,207.67"];
+			"top_scenario@controller_state":oport1:e -> "top_scenario@controller":port_0:w	[penwidth=1,
+				pos="e,165,135 455.5,87 463.73,87 460.29,99.648 454.5,105.5 443.2,116.91 177.51,112.8 166,124 165.78,124.21 165.56,124.44 165.36,124.69"];
+			"top_scenario@controller_monitor_state"	[color=black,
+				fillcolor="#FCD975",
+				fontname=Helvetica,
+				fontsize=12,
+				height=0.51389,
+				label="{ { <iport1> } | { controller_monitor_state&#92;ndelay&#92;n } | { <oport1> } }",
+				orientation=90,
+				pos="590.5,169",
+				rects="498,151,518,187 518,151,663,187 663,151,683,187",
+				shape=record,
+				style="rounded,filled",
+				width=2.5694];
+			"top_scenario@controller_monitor":port_3:e -> "top_scenario@controller_monitor_state":iport1:w	[penwidth=1,
+				pos="e,498,169 462,211 482.36,211 476.83,182.2 488.29,172.3"];
+			"top_scenario@saf"	[color=black,
+				fillcolor="#FCD975",
+				fontname=Helvetica,
+				fontsize=12,
+				height=0.51389,
+				label="{ { <port_0> } | { saf&#92;ndetectorMN&#92;n } | { <port_1> } }",
+				orientation=90,
+				pos="590.5,224",
+				rects="531.5,206,551.5,242 551.5,206,629.5,242 629.5,206,649.5,242",
+				shape=record,
+				style="rounded,filled",
+				width=1.6389];
+			"top_scenario@controller_monitor":port_3:e -> "top_scenario@saf":port_0:w	[penwidth=1,
+				pos="e,530.5,224 462,211 489.24,211 497.57,221.04 520.23,223.47"];
+			"top_scenario@controller_monitor_state":oport1:e -> "top_scenario@controller_monitor":port_0:w	[penwidth=1,
+				pos="e,307.5,190 684.5,169 692.73,169 689.48,181.84 683.5,187.5 668.54,201.68 518.47,189.88 498,187.5 481.67,185.6 478.33,180.9 462,179 \
+445.06,177.03 321.09,167.5 308.5,179 308.27,179.21 308.05,179.43 307.84,179.67"];
+		}
+		dummy	[height=0.5,
+			pos="76.5,34",
+			style=invisible,
+			width=1.0652];
+	}
+}

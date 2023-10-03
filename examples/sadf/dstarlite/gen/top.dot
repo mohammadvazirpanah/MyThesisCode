@@ -1,0 +1,205 @@
+digraph "" {
+	graph [bb="0,0,1086,329",
+		fontname=Helvetica,
+		overlap=prism,
+		rankdir=LR,
+		splines=true
+	];
+	node [label="\N"];
+	subgraph "cluster_top.xml" {
+		graph [bb="8,8,1078,321",
+			color="#f4efea",
+			fontsize=13,
+			label=top,
+			lheight=0.19,
+			lp="543,310",
+			lwidth=0.31,
+			style="filled, rounded"
+		];
+		subgraph "cluster_top.xmloutps" {
+			graph [label=""];
+		}
+		subgraph "cluster_top.xmlothers" {
+			graph [bb="16,60,954,291",
+				label=""
+			];
+			"top@maze1"	[color=black,
+				fillcolor="#FCD975",
+				fontname=Helvetica,
+				fontsize=12,
+				height=0.88889,
+				label="{ { <port_1>|<port_0> } | { maze1&#92;ncombMN&#92;n } | { <port_4>|<port_3>|<port_2> } }",
+				orientation=90,
+				pos="79,176",
+				rects="24,176.5,44,207.5 24,144.5,44,176.5 44,144.5,114,207.5 114,186.5,134,207.5 114,165.5,134,186.5 114,144.5,134,165.5",
+				shape=record,
+				style="rounded,filled",
+				width=1.5278];
+			"top@maze_init"	[color=black,
+				fillcolor="#FCD975",
+				fontname=Helvetica,
+				fontsize=12,
+				height=0.51389,
+				label="{ { <iport1> } | { maze_init&#92;ndelay&#92;n } | { <oport1> } }",
+				orientation=90,
+				pos="227,87",
+				rects="170,69,190,105 190,69,264,105 264,69,284,105",
+				shape=record,
+				style="rounded,filled",
+				width=1.5833];
+			"top@maze1":port_2:e -> "top@maze_init":iport1:w	[penwidth=1,
+				pos="e,170,87 134,155 163.92,155 142.86,102.94 160.04,89.922"];
+			"top@controller"	[color=black,
+				fillcolor="#FCD975",
+				fontname=Helvetica,
+				fontsize=12,
+				height=0.88889,
+				label="{ { <port_2>|<port_1>|<port_0> } | { controller&#92;ncombMN&#92;n } | { <port_4>|<port_3> } }",
+				orientation=90,
+				pos="227,176",
+				rects="170,186.5,190,207.5 170,165.5,190,186.5 170,144.5,190,165.5 190,144.5,264,207.5 264,176.5,284,207.5 264,144.5,284,176.5",
+				shape=record,
+				style="rounded,filled",
+				width=1.5833];
+			"top@maze1":port_4:e -> "top@controller":port_2:w	[penwidth=1,
+				pos="e,170,197 134,197 146,197 151.25,197 159.88,197"];
+			"top@maze1":port_3:e -> "top@controller":port_1:w	[penwidth=2,
+				pos="e,170,176 134,176 146,176 151.25,176 159.88,176",
+				style=bold];
+			"top@controller_monitor"	[color=black,
+				fillcolor="#FCD975",
+				fontname=Helvetica,
+				fontsize=12,
+				height=0.88889,
+				label="{ { <port_2>|<port_1>|<port_0> } | { controller_monitor&#92;ncombMN&#92;n } | { <port_3> } }",
+				orientation=90,
+				pos="403.5,251",
+				rects="320,261.5,340,282.5 320,240.5,340,261.5 320,219.5,340,240.5 340,219.5,467,282.5 467,219.5,487,282.5",
+				shape=record,
+				style="rounded,filled",
+				width=2.3194];
+			"top@maze1":port_4:e -> "top@controller_monitor":port_2:w	[penwidth=1,
+				pos="e,320,272 134,197 163.22,197 145.28,236.43 170,252 223.91,285.94 249.93,273.53 309.69,272.12"];
+			"top@controller_self_model"	[color=black,
+				fillcolor="#FCD975",
+				fontname=Helvetica,
+				fontsize=12,
+				height=0.88889,
+				label="{ { <port_0>|<port_2>|<port_1> } | { controller_self_model&#92;nkernelMN&#92;n } | { <port_3> } }",
+				orientation=90,
+				pos="854,171",
+				rects="762,181.5,782,202.5 762,160.5,782,181.5 762,139.5,782,160.5 782,139.5,926,202.5 926,139.5,946,202.5",
+				shape=record,
+				style="rounded,filled",
+				width=2.5556];
+			"top@maze1":port_4:e -> "top@controller_self_model":port_2:w	[penwidth=1,
+				pos="e,762,171 134,197 154.27,197 150.83,218.42 170,225 217.92,241.44 234.32,234.94 284,225 301,221.6 303.24,214.41 320,210 392.3,191 \
+413.31,202.57 487,190 503.16,187.24 506.75,184.16 523,182 625.01,168.42 653.83,170.82 751.96,170.99"];
+			"top@maze1":port_3:e -> "top@controller_self_model":port_1:w	[penwidth=2,
+				pos="e,762,150 134,176 158.25,176 148.86,146.88 170,135 214.85,109.8 238.36,138.73 284,115 304.08,104.56 299.09,87.659 320,79 500.68,\
+4.1615 560.98,145.04 751.92,149.87",
+				style=bold];
+			"top@maze_init":oport1:e -> "top@maze1":port_0:w	[penwidth=1,
+				pos="e,23,160 285,87 293.23,87 289.58,99.446 284,105.5 266.67,124.3 194.43,113.46 170,121 152.91,126.28 151.31,134.5 134,139 122.16,142.08 \
+32.725,135.42 24,144 22.333,145.64 20.885,147.93 19.944,150.26"];
+			"top@cmd_init"	[color=black,
+				fillcolor="#FCD975",
+				fontname=Helvetica,
+				fontsize=12,
+				height=0.51389,
+				label="{ { <iport1> } | { cmd_init&#92;ndelay&#92;n } | { <oport1> } }",
+				orientation=90,
+				pos="403.5,162",
+				rects="350,144,370,180 370,144,437,180 437,144,457,180",
+				shape=record,
+				style="rounded,filled",
+				width=1.4861];
+			"top@cmd_init":oport1:e -> "top@maze1":port_1:w	[penwidth=1,
+				pos="e,23,192 458.5,162 466.73,162 463.17,174.53 457.5,180.5 436.34,202.77 349.1,185.14 320,195 302.24,201.02 302.05,211.92 284,217 235.23,\
+230.72 220.64,218.56 170,217 105.02,215 69.99,253.95 24,208 22.346,206.35 20.903,204.06 19.962,201.72"];
+			"top@controller":port_4:e -> "top@cmd_init":iport1:w	[penwidth=1,
+				pos="e,348.5,162 284,192 311.91,192 316.17,168.62 338.54,163.14"];
+			"top@controller_state"	[color=black,
+				fillcolor="#FCD975",
+				fontname=Helvetica,
+				fontsize=12,
+				height=0.51389,
+				label="{ { <iport1> } | { controller_state&#92;ndelay&#92;n } | { <oport1> } }",
+				orientation=90,
+				pos="403.5,107",
+				rects="328.5,89,348.5,125 348.5,89,458.5,125 458.5,89,478.5,125",
+				shape=record,
+				style="rounded,filled",
+				width=2.0833];
+			"top@controller":port_3:e -> "top@controller_state":iport1:w	[penwidth=1,
+				pos="e,327.5,107 284,160 310.43,160 300.82,120.14 317.67,109.56"];
+			"top@controller":port_4:e -> "top@controller_monitor":port_1:w	[penwidth=1,
+				pos="e,320,251 284,192 310.4,192 295.33,235.57 310.06,247.83"];
+			"top@controller_state":oport1:e -> "top@controller":port_0:w	[penwidth=1,
+				pos="e,169,155 479.5,107 487.73,107 484.31,119.66 478.5,125.5 454.29,149.85 194.65,120.09 170,144 169.78,144.21 169.56,144.44 169.35,\
+144.69"];
+			"top@controller_monitor_state"	[color=black,
+				fillcolor="#FCD975",
+				fontname=Helvetica,
+				fontsize=12,
+				height=0.51389,
+				label="{ { <iport1> } | { controller_monitor_state&#92;ndelay&#92;n } | { <oport1> } }",
+				orientation=90,
+				pos="624.5,209",
+				rects="523,191,543,227 543,191,706,227 706,191,726,227",
+				shape=record,
+				style="rounded,filled",
+				width=2.8194];
+			"top@controller_monitor":port_3:e -> "top@controller_monitor_state":iport1:w	[penwidth=1,
+				pos="e,523,209 487,251 507.36,251 501.83,222.2 513.29,212.3"];
+			"top@saf"	[color=black,
+				fillcolor="#FCD975",
+				fontname=Helvetica,
+				fontsize=12,
+				height=0.51389,
+				label="{ { <port_0> } | { saf&#92;ndetectorMN&#92;n } | { <port_1> } }",
+				orientation=90,
+				pos="624.5,264",
+				rects="561,246,581,282 581,246,668,282 668,246,688,282",
+				shape=record,
+				style="rounded,filled",
+				width=1.7639];
+			"top@controller_monitor":port_3:e -> "top@saf":port_0:w	[penwidth=1,
+				pos="e,559.5,264 487,251 516.03,251 524.84,261.22 549.29,263.54"];
+			"top@controller_monitor_state":oport1:e -> "top@controller_monitor":port_0:w	[penwidth=1,
+				pos="e,318.5,230 727.5,209 735.73,209 732.48,221.84 726.5,227.5 710.09,243.05 545.46,230.12 523,227.5 506.67,225.6 503.33,220.9 487,219 \
+450.03,214.69 346.99,193.9 319.5,219 319.27,219.21 319.05,219.43 318.84,219.67"];
+			"top@saf":port_1:e -> "top@controller_self_model":port_0:w	[penwidth=1,
+				pos="e,762,192 689.5,264 709.68,264 711.46,251 726,237 741.42,222.15 738.32,200.68 751.85,194.04"];
+		}
+		subgraph "cluster_top.xmlsources" {
+			graph [label=""];
+		}
+		subgraph "cluster_top.xmlinps" {
+			graph [label=""];
+		}
+		subgraph "cluster_top.xmlsinks" {
+			graph [bb="974,144,1070,198",
+				label=""
+			];
+			"top@sink"	[color=black,
+				fillcolor="#FCD975",
+				fontname=Helvetica,
+				fontsize=12,
+				height=0.51389,
+				label="{ { <iport1> } | { sink&#92;nsink&#92;n } | {  } }",
+				orientation=90,
+				pos="1022,171",
+				rects="982,153,1002,189 1002,153,1042,189 1042,153,1062,189",
+				shape=record,
+				style="rounded,filled",
+				width=1.1111];
+		}
+		"top@controller_self_model":port_3:e -> "top@sink":iport1:w	[penwidth=1,
+			pos="e,981,171 947,171 958.1,171 963.08,171 970.93,171"];
+		dummy	[height=0.5,
+			pos="79,34",
+			style=invisible,
+			width=1.2638];
+	}
+}
