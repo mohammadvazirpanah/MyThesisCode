@@ -1,25 +1,47 @@
 
 #include <forsyde.hpp>
-#include "globals.hpp"
-#include "maze.hpp"
-#include "controller.hpp"
-#include "controller_monitor.hpp"
-#include "controller_self_model.hpp"
-#include "saf.hpp"
+#include "forsyde/ros_hsdf_wrapper.hpp"
 
-// #include <chrono>
 
 using namespace sc_core;
 using namespace ForSyDe;
 using namespace std;
-// using namespace std::chrono;
+
+typedef double odom_type;              
+typedef array <float,360> scan_type;  
+
+enum cmd_type {RIGHT, UP, LEFT, DOWN, NOP};     
 
 SC_MODULE(top)
 {
    
+    std::vector <std::string> topics_publisher=  
+    {
+        "/cmd_vel"
+    }; 
+
+    std::vector <std::string> topics_subscriber= 
+    {
+        "/odom",
+        "/scan"
+    };
+
+    SDF::signal<odom_type> from_wrapper1;
+    SDF::signal<scan_type> from_wrapper2;
+    SDF::signal<cmd_type>  to_wrapper1;
 
     SC_CTOR(top)
     {
+        SDF::make_sdf_roswrap("SdfRosWrapper", 
+                            topics_publisher,
+                            topics_subscriber, 
+                            from_wrapper1,
+                            from_wrapper2, 
+                            to_wrapper1
+                            );
+
+        auto sink2 = new SDF::sink<scan_type>("sink1",[](const scan_type& out) {cout <<"scan = " <<out << endl;});
+        sink2-> iport1(from_wrapper2);
         
     }
     
