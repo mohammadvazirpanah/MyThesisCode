@@ -69,9 +69,8 @@ ros::NodeHandle *n;                       // Node Handle For Ros Environment
 ros::Rate *rate;                          // Ros Rate (Nedded For Timed Callbacks)
 bool first_run;                           // First Run Flag
 
+
 /* CallBack Functions are Declerated Here */
-
-
 void Odom_Callback(const nav_msgs::Odometry::ConstPtr& msg)
 {
   // ROS_INFO("Seq: [%d]", msg->header.seq);
@@ -81,104 +80,46 @@ void Odom_Callback(const nav_msgs::Odometry::ConstPtr& msg)
   // *oval1 = msg->pose.pose.position.x ;
 }
 
+  bool checkObjectInRange(const sensor_msgs::LaserScan::ConstPtr& scan, int start_idx, int end_idx, float threshold_distance) 
+  {
+      for (int i = start_idx; i <= end_idx; ++i) 
+      {
+          float range = scan->ranges[i];
+          if (range > scan->range_min && range < scan->range_max && range < threshold_distance) 
+          {
+              return true; // Object detected within threshold distance
+          }
+      }
+      return false; // No object detected within threshold distance
+  }
 
 void Scan_Callback(const sensor_msgs::LaserScan::ConstPtr& scan)
 {
     
     std::array<float, 360> scan_array;
-    std::copy(scan->ranges.begin(), scan->ranges.end(), scan_array.begin());
-    
-    // std::copy(scan_array.begin(), scan_array.end(), std::ostream_iterator<float>(std::cout, ","));
+    std::vector<float> scan_vect;
+    std::copy(scan->ranges.begin(), scan->ranges.end(), std::back_inserter(scan_vect));
 
-    *oval2 = scan_array;
-
-
+    float threshold_distance = 1.5; 
  
 
 
-
-
-
-
-    // std::cout<<"type = "<< typeid(scan->ranges).name()<<std::endl;
-		// minRan = scan->range_min;
-		// maxRan = scan->range_max;
-		// minAng = scan->angle_min;
-		// maxAng = scan->angle_max;
-
-		// std::cout << "minRan: " << minRan << " maxRan: " << maxRan << " minAng: " << minAng << " maxAng: " << maxAng << std::endl;
-	// 	int midIdx = (int)round(scan_vect.size() / 2.0);
-
-
-  // std::cout<<scan_array[0]<<std::endl;
-  // std::cout<<scan_array[1]<<std::endl;
-  // std::cout<<scan_array[2]<<std::endl;
-  // std::cout<<scan_array[3]<<std::endl;
-
-	// 	scan_right = scan_vect.front();
-	// 	scan_mid = scan_vect[midIdx];
-	// 	scan_left = scan_vect.back();
-
-	// 	if (startup) {
-	// 		if (std::isnan(scan_left))
-	// 			send_left = MAX_DEPTH;
-	// 		if (std::isnan(scan_mid))
-	// 			send_mid = MAX_DEPTH;
-	// 		if (std::isnan(scan_right))
-	// 			send_right = MAX_DEPTH;
-	// 		scanHistLeft.push_back(send_left);
-	// 		scanHistMid.push_back(send_mid);
-	// 		scanHistRight.push_back(send_right);
-	// 	}
-	// 	else {
-	// 		if (std::isnan(scan_left)) {
-	// 			if (*scanHistLeft.begin() < *scanHistLeft.rbegin()) //if was previously increasing
-	// 				send_left = MAX_DEPTH;
-	// 			else if (*scanHistLeft.begin() == *scanHistLeft.rbegin())
-	// 				send_left = send_left;
-	// 			else
-	// 				send_left = MIN_DEPTH;
-	// 		} 
-	// 		else
-	// 			send_left = scan_left;
-	// 		if (std::isnan(scan_mid)) {
-	// 			if (*scanHistMid.begin() < *scanHistMid.rbegin())
-	// 				send_mid = MAX_DEPTH;
-	// 			else if (*scanHistMid.begin() == *scanHistMid.rbegin())
-	// 				send_mid = send_mid;
-	// 			else
-	// 				send_mid = MIN_DEPTH;
-	// 		} 
-	// 		else
-	// 			send_mid = scan_mid;
-	// 		if (std::isnan(scan_right)) {
-	// 			if (*scanHistRight.begin() < *scanHistRight.rbegin())
-	// 				send_right = MAX_DEPTH;
-	// 			else if (*scanHistRight.begin() == *scanHistRight.rbegin())
-	// 				send_right = send_right;
-	// 			else
-	// 				send_right = MIN_DEPTH;
-	// 		} 
-	// 		else
-	// 			send_right = scan_right;
-	// 		scanHistLeft.pop_front();
-	// 		scanHistMid.pop_front();
-	// 		scanHistRight.pop_front();
-
-	// 		scanHistLeft.push_back(send_left);
-	// 		scanHistMid.push_back(send_mid);
-	// 		scanHistRight.push_back(send_right);
-	// 	}
-	// 	startup = false;
-	// 	std::cout << "Send Left: " << send_left << " Send Mid: " << send_mid << " Send Right: " << send_right << std::endl;
-
-	// 	scan_msg.data.resize(3);
-	// 	scan_msg.data[0] = send_left;
-	// 	scan_msg.data[1] = send_mid;
-	// 	scan_msg.data[2] = send_right;
-	// 	scan_info.publish(scan_msg);
-	// }
-  // *oval2 = scan->range_max;
+    // Detect objects in 4 directions (front, back, left, right)
+    bool object_front_1 = checkObjectInRange(scan, 0, 25, threshold_distance);
+    bool object_front_2 = checkObjectInRange(scan, 335, 359, threshold_distance);
+    bool object_front = object_front_1 || object_front_2;
+    bool object_left = checkObjectInRange(scan, 25, 135, threshold_distance);
+    bool object_back = checkObjectInRange(scan, 135, 225, threshold_distance);
+    bool object_right = checkObjectInRange(scan, 225, 315, threshold_distance);
+        
+     // Print object detection status
+    std::cout << "Object detected:\n";
+    std::cout << "Front: " << (object_front ? "Yes" : "No") << std::endl;
+    std::cout << "Back: " << (object_back ? "Yes" : "No") << std::endl;
+    std::cout << "Left: " << (object_left ? "Yes" : "No") << std::endl;
+    std::cout << "Right: " << (object_right ? "Yes" : "No") << std::endl;
+    
+    *oval2 = scan_vect;
 
 }
   
