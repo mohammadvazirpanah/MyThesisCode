@@ -1,6 +1,9 @@
 
 #include <forsyde.hpp>
 #include "forsyde/ros_hsdf_wrapper.hpp"
+#include "monitor.hpp"
+#include "controller.hpp"
+#include "globals.hpp"
 #include <cmath>
 #include <limits>
 
@@ -9,38 +12,7 @@ using namespace sc_core;
 using namespace ForSyDe;
 using namespace std;
 
-typedef double odom_type;              
-// typedef array <float,360> scan_type;  
-typedef std::vector<float> scan_type;
 
-enum cmd_type {RIGHT, UP, LEFT, DOWN, NOP};    
-
-
-void filter_scan_func (std::vector<scan_type>& out1, 
-                    const std::vector<scan_type>& inp1)
-{
-    
-
-    // std::vector<scan_type> in_port;
-    // in_port = inp1; 
-    // //filter inf element
-
-    // for (int i = 0; i < in_port.size(); i++)
-    // {
-    //     for (int j = 0; j < in_port[i].size(); j++)
-    //     {
-    //         if (in_port[i][j]!='inf')
-    //         {
-    //             in_port[i][j] = in_port[i][j];
-    //         }
-    //     }
-    // }
-    // // std::cout<<"in_port = "<<in_port[0][0]<<std::endl;
-    // out1 = in_port;
-
-
-
-}
 
 
 SC_MODULE(top)
@@ -59,33 +31,39 @@ SC_MODULE(top)
 
     SDF::signal<odom_type> from_wrapper_odom;
     SDF::signal<scan_type> from_wrapper_scan;
-    SDF::signal<scan_type> from_scan;
     SDF::signal<cmd_type>  to_wrapper_cmd;
+    SDF::signal<monitor_state> from_monitor_out;
 
     SC_CTOR(top)
     {
         SDF::make_sdf_roswrap("SdfRosWrapper", 
                             topics_publisher,
                             topics_subscriber, 
+                            to_wrapper_cmd,
                             from_wrapper_odom,
-                            from_wrapper_scan, 
-                            to_wrapper_cmd
+                            from_wrapper_scan
                             );
 
-        // auto filter_function = [](scan_type& output, const scan_type& input) {
-        //     filter_scan_func(output, input);
-        // };
+        auto monitor = new SDF::combMN<tuple<monitor_state>,tuple<scan_type,odom_type>>(
+        "monitor",
+        monitor_func,
+        {1},
+        {1,1}
+        );
+        get<0>(monitor->iport)(from_wrapper_scan);
+        get<1>(monitor->iport)(from_wrapper_odom);
+        get<0>(monitor->oport)(from_monitor_out);
 
-        SDF::make_comb("filter_scan", filter_scan_func, 1, 1, from_scan, from_wrapper_scan);
-
-        auto sink2 = new SDF::sink<scan_type>("sink1",[](const scan_type& out) {cout <<"scan = " <<out << endl;});
-        sink2-> iport1(from_scan);
+        auto controller = new SDF::combMN<tuple<cmd_type>,tuple<monitor_state>>(
+        "controller",
+        controller_func,
+        {1},
+        {1}
+        );
+        get<0>(controller->iport)(from_monitor_out);
+        get<0>(controller->oport)(to_wrapper_cmd);
         
-
         
-
-        // auto filter_scan = new SDF::comb<scan_type>("filter_laser", [](const scan_type& in, scan_type& out) {
-  
     }
     
 #ifdef FORSYDE_INTROSPECTION
