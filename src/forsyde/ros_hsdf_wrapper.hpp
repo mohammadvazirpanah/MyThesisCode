@@ -83,17 +83,10 @@ void Odom_Callback(const nav_msgs::Odometry::ConstPtr& msg)
 
 
 void Scan_Callback(const sensor_msgs::LaserScan::ConstPtr& scan)
-{
-    
+{ 
     std::vector<float> scan_vect; // Vector to store the scan data
     std::copy(scan->ranges.begin(), scan->ranges.end(), std::back_inserter(scan_vect)); 
     *oval2 = scan_vect;
-
-
-     
-    
-    
-   
 
 }
   
@@ -110,6 +103,7 @@ void Scan_Callback(const sensor_msgs::LaserScan::ConstPtr& scan)
 		  ros::init(argc, argv, "ForSyDe_HSDF_ROS_Wrapper");
       ros::start();
       n = new ros::NodeHandle;
+     
 
       //publisher and subscriber nodes are created here
 
@@ -130,34 +124,50 @@ void Scan_Callback(const sensor_msgs::LaserScan::ConstPtr& scan)
       
       *ival1 = iport1.read();       // Read Input Value for Cmd_vel from iport1 
 
+      auto ivals = *ival1;
+      double x_linear = ivals[0];
+      double y_linear = ivals[1];
+      double z_linear = ivals[2];
 
+      double x_angular = ivals[3];
+      double y_angular = ivals[4];
+      double z_angular = ivals[5];
       
-      //Geometry Message for Cmd_vel is created here and published
+   
 
-      /* geometry_msgs::Twist msg1;
-      msg1.linear.x = *ival1;
-      msg1.linear.y = ival1->from_abst_ext(0.0);
-      msg1.angular.z = ival1->from_abst_ext(0.0);
+      //Geometry Message for Cmd_vel is created here and published
+      geometry_msgs::Twist msg1;
+    
+      msg1.linear.x = x_linear;
+      msg1.linear.y = y_linear;
+      msg1.linear.z = z_linear;
+
+      msg1.angular.x = x_angular;
+      msg1.angular.y = y_angular;
+      msg1.angular.z = z_angular;
+
       pub1.publish(msg1);
-      */
 
       ros::spinOnce(); 
+
+ 
+
+     
+      
       
     }
     
     void exec() 
     {
-      // std::cout<<"ROS Wrapper Exec"<<std::endl;
     }
     
     void prod()
     {
-      // std::cout<<"ROS Wrapper Prod"<<std::endl;
       
-      while (ros::ok())
-
+      // Wait for the callback functions to be called and the output values to be written
+      while (oval1->empty() || oval2->empty())
       {
-        ros::spinOnce(); 
+        ros::spinOnce();
         wait(SC_ZERO_TIME);
       }
 
