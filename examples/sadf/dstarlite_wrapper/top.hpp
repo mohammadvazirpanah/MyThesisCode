@@ -31,8 +31,10 @@ SC_MODULE(top)
 
     SDF::signal<odom_type> from_wrapper_odom;
     SDF::signal<scan_type> from_wrapper_scan;
-    SDF::signal<cmd_type>  to_wrapper_cmd;
+    SDF::signal<cmd_type> to_controller_cmd_out, to_controller_cmd_in;
+    SDF::signal<cmd_type_robot> to_wrapper_cmd;
     SDF::signal<monitor_state> from_monitor_out;
+    SDF::signal<controller_state> controller_state_out, controller_state_inp;
 
     SC_CTOR(top)
     {
@@ -54,14 +56,25 @@ SC_MODULE(top)
         get<1>(monitor->iport)(from_wrapper_odom);
         get<0>(monitor->oport)(from_monitor_out);
 
-        auto controller = new SDF::combMN<tuple<cmd_type>,tuple<monitor_state>>(
+        SDF::make_source("controller_cmd_source", [] (cmd_type& out1, const cmd_type& inp1) {out1 =  LEFT;}, UP, 1,to_controller_cmd_in);
+
+
+        SDF::make_delay("controller_state", make_tuple(INIT, odom_type{0.0,0.0,0.0,0.0,0.0}), controller_state_inp, controller_state_out);
+
+        auto controller = new SDF::combMN<tuple<cmd_type_robot,controller_state>,
+                                        tuple<monitor_state,controller_state,cmd_type>>(
         "controller",
         controller_func,
-        {1},
-        {1}
+        {1,1},
+        {1,1,1}
         );
+
         get<0>(controller->iport)(from_monitor_out);
+        get<1>(controller->iport)(controller_state_inp);
+        get<2>(controller->iport)(to_controller_cmd_in);
+
         get<0>(controller->oport)(to_wrapper_cmd);
+        get<1>(controller->oport)(controller_state_out);
         
         
     }

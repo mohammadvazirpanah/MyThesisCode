@@ -77,7 +77,9 @@ void Odom_Callback(const nav_msgs::Odometry::ConstPtr& msg)
   float x =msg->pose.pose.position.x;
   float y =msg->pose.pose.position.y;
   float z =msg->pose.pose.position.z;
-  *oval1 = std::array<float,3>{x,y,z};
+  float z_orientation =msg->pose.pose.orientation.z;
+  float w_orientation =msg->pose.pose.orientation.w;
+  *oval1 = std::array<float,5>{x,y,z,z_orientation,w_orientation};
 }
 
 

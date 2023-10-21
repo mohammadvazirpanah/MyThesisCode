@@ -31,17 +31,15 @@ void monitor_func(tuple<vector<monitor_state>>& outs,
     
     auto scan_data_vect = std::get<0>(inps)[0];
     auto odom_data_arr  = std::get<1>(inps)[0];
-    // std::cout<<"odom_data_arr_x = "<<odom_data_arr[0]<<std::endl;
-    // std::cout<<"odom_data_arr_y = "<<odom_data_arr[1]<<std::endl;
-    // std::cout<<"odom_data_arr_z = "<<odom_data_arr[2]<<std::endl;
+
 
 
     bool object_front_1 = checkObjectInRange(scan_data_vect, 0, 25, threshold_distance);
     bool object_front_2 = checkObjectInRange(scan_data_vect, 335, 359, threshold_distance);
     bool object_front = object_front_1 || object_front_2;
-    bool object_right = checkObjectInRange(scan_data_vect, 25, 135, threshold_distance);
+    bool object_left = checkObjectInRange(scan_data_vect, 25, 135, threshold_distance);
     bool object_back = checkObjectInRange(scan_data_vect, 135, 225, threshold_distance);
-    bool object_left = checkObjectInRange(scan_data_vect, 225, 315, threshold_distance);
+    bool object_right = checkObjectInRange(scan_data_vect, 225, 315, threshold_distance);
         
    
     if (object_front)
@@ -56,10 +54,10 @@ void monitor_func(tuple<vector<monitor_state>>& outs,
     }
     
     
-    std::cout<<"object_front = "<<object_front<<std::endl;
-    std::cout<<"object_back = "<<object_back<<std::endl;
-    std::cout<<"object_left = "<<object_left<<std::endl;
-    std::cout<<"object_right = "<<object_right<<std::endl;
+    // std::cout<<"object_front = "<<object_front<<std::endl;
+    // std::cout<<"object_back = "<<object_back<<std::endl;
+    // std::cout<<"object_left = "<<object_left<<std::endl;
+    // std::cout<<"object_right = "<<object_right<<std::endl;
 
     // Print object detections status
     std::cout << "Object detected:\n";
